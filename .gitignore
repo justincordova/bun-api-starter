@@ -1,0 +1,31 @@
+# Node modules
+node_modules/
+
+# Bun
+dist/
+build/
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+bun-debug.log*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Optional cache/tools
+.cache/
+coverage/
+.vscode/
+.idea/
+
+# TypeScript
+*.tsbuildinfo
+
+# Test coverage
+coverage/
