@@ -42,6 +42,8 @@ A minimal backend template built with Bun, Express, and TypeScript.
 ### Installation
 
 ```bash
+git clone git@github.com:justincordova/bun-api-starter.git
+cd bun-api-starter
 bun install
 ```
 
