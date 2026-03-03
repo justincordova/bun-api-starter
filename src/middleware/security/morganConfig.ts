@@ -1,5 +1,5 @@
 import morgan from "morgan";
-import logger from "../../config/logger";
+import logger from "../../lib/logger";
 
 /*
   Custom stream to pipe Morgan logs to Winston

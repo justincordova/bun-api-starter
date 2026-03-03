@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import logger from '../../config/logger';
+import logger from '../../lib/logger';
 import { sendError } from '../../utils/response';
 import { NOT_FOUND_MESSAGE, HTTP_STATUS } from '../../constants';
 

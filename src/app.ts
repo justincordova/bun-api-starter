@@ -2,7 +2,7 @@ import express, {
   Request,
   Response,
 } from "express";
-import logger from "./config/logger";
+import logger from "./lib/logger";
 import { notFoundHandler } from "./middleware/error/notFoundHandler";
 import { errorHandler } from "./middleware/error/errorHandler";
 import { requestId } from "./middleware/requestId";

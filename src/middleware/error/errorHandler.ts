@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import logger from "../../config/logger";
+import logger from "../../lib/logger";
 import { HTTP_STATUS } from "../../constants";
 import { sendError } from "../../utils/response";
 

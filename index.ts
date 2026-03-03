@@ -2,7 +2,7 @@ import app from "./src/app";
 import { PORT } from "./src/config/env";
 import { Server as HTTPServer } from "http";
 import { createServer } from "http";
-import logger, { logError, logStartup, logShutdown } from "./src/config/logger";
+import logger, { logError, logStartup, logShutdown } from "./src/lib/logger";
 
 // Ensure PORT is a number
 const port = Number(PORT);
