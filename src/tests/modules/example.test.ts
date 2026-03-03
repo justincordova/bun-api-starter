@@ -1,11 +1,3 @@
-// These tests use standard describe/it syntax that works with most testing frameworks.
-// You can use any test framework you prefer - just install and configure it:
-// - Jest: npm install jest @types/jest ts-jest
-// - Mocha + Chai: npm install mocha chai @types/mocha @types/chai
-// - AVA: npm install ava @types/ava
-// - Tap: npm install tap @types/tap
-// - Bun's built-in test runner: bun test (no install needed)
-
 import { resetExamples } from '../../modules/example/services';
 
 describe('Example Services', () => {
