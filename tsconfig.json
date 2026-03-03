@@ -12,8 +12,8 @@
     "resolveJsonModule": true,
     "types": ["@types/bun"],
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "."
   },
-  "include": ["src/**/*"],
+  "include": ["index.ts", "src/**/*"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }

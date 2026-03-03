@@ -28,19 +28,18 @@ app.use(express.json({ limit: "10mb" }));
 // Parse URL-encoded bodies (max 10MB)
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-// Trust proxy to get real IP addresses (behind load balancer/reverse proxy)
-app.set("trust proxy", true);
+// Trust first proxy for real IP addresses (behind load balancer/reverse proxy)
+app.set("trust proxy", 1);
 
-/*
-  Security middleware - only enable in non-development environments
-  Skipped in development for easier debugging
-*/
+// Security middleware - always enabled
+app.use(corsConfig);
+app.use(helmetConfig);
+app.use(rateLimiterConfig);
+
+// Compression and HTTP logging - skip in development
 if (process.env.NODE_ENV !== "development") {
-  app.use(corsConfig);
-  app.use(helmetConfig);
   app.use(compressionConfig);
   app.use(morganConfig);
-  app.use(rateLimiterConfig);
 }
 
 // Routes

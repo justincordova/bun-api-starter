@@ -1,16 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import logger from "../../config/logger";
 import { HTTP_STATUS } from "../../constants";
-
-// Helper function to send error responses
-const sendError = (
-  res: Response,
-  statusCode: number,
-  error: string,
-  message?: string,
-): void => {
-  res.status(statusCode).json({ success: false, error, message });
-};
+import { sendError } from "../../utils/response";
 
 /*
   Global error handler middleware

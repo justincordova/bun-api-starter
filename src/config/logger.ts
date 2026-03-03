@@ -44,38 +44,27 @@ const fileFormat = winston.format.combine(
   winston.format.json(),
 );
 
-// Create logs directory if it doesn't exist
 const logsDir = path.join(process.cwd(), "logs");
-if (!fs.existsSync(logsDir)) {
-  fs.mkdirSync(logsDir, { recursive: true });
-}
 
-// Mock logger for testing - logs to no-op functions
+// Ensure logs directory exists (only needed in production)
+const ensureLogsDir = () => {
+  if (!fs.existsSync(logsDir)) {
+    fs.mkdirSync(logsDir, { recursive: true });
+  }
+};
+
+// Silent logger for testing
 const createTestLogger = () => {
-  const mockFn = () => {};
-  return {
-    error: mockFn,
-    warn: mockFn,
-    info: mockFn,
-    http: mockFn,
-    debug: mockFn,
-    add: mockFn,
-    remove: mockFn,
-    clear: mockFn,
-    close: mockFn,
-    query: mockFn,
-    stream: mockFn,
-    configure: mockFn,
-    child: mockFn,
-    isLevelEnabled: mockFn,
-    level: "info",
+  return winston.createLogger({
     levels: logLevels,
-    transports: [],
-  };
+    silent: true,
+  });
 };
 
 // Production logger with file and console transports
 const createProductionLogger = () => {
+  ensureLogsDir();
+
   const transports: winston.transport[] = [
     new winston.transports.Console({
       format: consoleFormat,

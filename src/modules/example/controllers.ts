@@ -6,87 +6,109 @@ import {
   updateExample,
   deleteExample,
 } from './services';
-import { sendSuccess, sendCreated } from '../../utils/response';
+import { sendSuccess, sendCreated, sendError } from '../../utils/response';
+import { HTTP_STATUS } from '../../constants';
 
-/**
- * Get all examples controller
- *
- * @param _req - Express request object (unused)
- * @param res - Express response object
- * @param _next - Express next function (unused)
- */
 export const getAllExamplesController = (
   _req: Request,
   res: Response,
-  _next: NextFunction
+  next: NextFunction
 ): void => {
-  const examples = getAllExamples();
-  sendSuccess(res, examples);
+  try {
+    const examples = getAllExamples();
+    sendSuccess(res, examples);
+  } catch (error) {
+    next(error);
+  }
 };
 
-/**
- * Get a single example by ID controller
- *
- * @param req - Express request object containing params.id
- * @param res - Express response object
- * @param _next - Express next function (unused)
- */
 export const getExampleByIdController = (
   req: Request,
   res: Response,
-  _next: NextFunction
+  next: NextFunction
 ): void => {
-  const id = Number(req.params.id);
-  const example = getExampleById(id);
-  sendSuccess(res, example);
+  try {
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+      sendError(res, HTTP_STATUS.BAD_REQUEST, 'Invalid ID', 'ID must be a number');
+      return;
+    }
+
+    const example = getExampleById(id);
+    if (!example) {
+      sendError(res, HTTP_STATUS.NOT_FOUND, 'Not Found', `Example with ID ${id} not found`);
+      return;
+    }
+
+    sendSuccess(res, example);
+  } catch (error) {
+    next(error);
+  }
 };
 
-/**
- * Create a new example controller
- *
- * @param req - Express request object containing example data in body
- * @param res - Express response object
- * @param _next - Express next function (unused)
- */
 export const createExampleController = (
   req: Request,
   res: Response,
-  _next: NextFunction
+  next: NextFunction
 ): void => {
-  const example = createExample(req.body);
-  sendCreated(res, example, 'Example created successfully');
+  try {
+    const { name, email } = req.body;
+    if (!name || !email) {
+      sendError(res, HTTP_STATUS.BAD_REQUEST, 'Validation Error', 'name and email are required');
+      return;
+    }
+
+    const example = createExample(req.body);
+    sendCreated(res, example, 'Example created successfully');
+  } catch (error) {
+    next(error);
+  }
 };
 
-/**
- * Update an existing example controller
- *
- * @param req - Express request object containing params.id and update data in body
- * @param res - Express response object
- * @param _next - Express next function (unused)
- */
 export const updateExampleController = (
   req: Request,
   res: Response,
-  _next: NextFunction
+  next: NextFunction
 ): void => {
-  const id = Number(req.params.id);
-  const example = updateExample(id, req.body);
-  sendSuccess(res, example);
+  try {
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+      sendError(res, HTTP_STATUS.BAD_REQUEST, 'Invalid ID', 'ID must be a number');
+      return;
+    }
+
+    const example = updateExample(id, req.body);
+    if (!example) {
+      sendError(res, HTTP_STATUS.NOT_FOUND, 'Not Found', `Example with ID ${id} not found`);
+      return;
+    }
+
+    sendSuccess(res, example);
+  } catch (error) {
+    next(error);
+  }
 };
 
-/**
- * Delete an example controller
- *
- * @param req - Express request object containing params.id
- * @param res - Express response object
- * @param _next - Express next function (unused)
- */
 export const deleteExampleController = (
   req: Request,
   res: Response,
-  _next: NextFunction
+  next: NextFunction
 ): void => {
-  const id = Number(req.params.id);
-  deleteExample(id);
-  sendSuccess(res, undefined, 'Example deleted successfully');
+  try {
+    const id = Number(req.params.id);
+    if (isNaN(id)) {
+      sendError(res, HTTP_STATUS.BAD_REQUEST, 'Invalid ID', 'ID must be a number');
+      return;
+    }
+
+    const deleted = deleteExample(id);
+    if (!deleted) {
+      sendError(res, HTTP_STATUS.NOT_FOUND, 'Not Found', `Example with ID ${id} not found`);
+      return;
+    }
+
+    sendSuccess(res, undefined, 'Example deleted successfully');
+  } catch (error) {
+    next(error);
+  }
 };
