@@ -2,20 +2,20 @@ import express, {
   Request,
   Response,
 } from "express";
-import logger from "./lib/logger";
-import { notFoundHandler } from "./middleware/error/notFoundHandler";
-import { errorHandler } from "./middleware/error/errorHandler";
-import { requestId } from "./middleware/requestId";
+import logger from "@/lib/logger";
+import { notFoundHandler } from "@/middleware/error/notFoundHandler";
+import { errorHandler } from "@/middleware/error/errorHandler";
+import { requestId } from "@/middleware/requestId";
 
 // Security Middleware
-import corsConfig from "./middleware/security/corsConfig";
-import helmetConfig from "./middleware/security/helmetConfig";
-import compressionConfig from "./middleware/security/compressionConfig";
-import rateLimiterConfig from "./middleware/security/rateLimiterConfig";
-import morganConfig from "./middleware/security/morganConfig";
+import corsConfig from "@/middleware/security/corsConfig";
+import helmetConfig from "@/middleware/security/helmetConfig";
+import compressionConfig from "@/middleware/security/compressionConfig";
+import rateLimiterConfig from "@/middleware/security/rateLimiterConfig";
+import morganConfig from "@/middleware/security/morganConfig";
 
 // Routes
-import exampleRoutes from "./modules/example/routes";
+import exampleRoutes from "@/modules/example/routes";
 
 const app = express();
 

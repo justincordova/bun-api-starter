@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { HTTP_STATUS } from '../constants/index';
+import { HTTP_STATUS } from '@/constants';
 
 // Standard API response format
 export interface ApiResponse<T = unknown> {

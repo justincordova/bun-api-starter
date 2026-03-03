@@ -1,5 +1,5 @@
 import { RateLimiterMemory } from "rate-limiter-flexible";
-import { RATE_LIMIT_POINTS, RATE_LIMIT_DURATION } from "../../config/env";
+import { RATE_LIMIT_POINTS, RATE_LIMIT_DURATION } from "@/config/env";
 import { Request } from "express";
 
 /*

@@ -12,7 +12,6 @@ A minimal backend template built with Bun, Express, and TypeScript.
 - Graceful shutdown
 - Request ID tracking for debugging
 - Docker support for easy deployment
-- Framework-agnostic testing setup
 
 ## Dependencies
 
@@ -24,18 +23,17 @@ A minimal backend template built with Bun, Express, and TypeScript.
 - `morgan` - HTTP request logger
 - `winston` - Structured logging
 - `rate-limiter-flexible` - Rate limiting
-- `dotenv` - Environment variable management
 
 ### Development Dependencies
 - `typescript` - TypeScript compiler
 - `eslint` - Linting
+- `@eslint/js` - ESLint JavaScript plugin
 - `typescript-eslint` - TypeScript ESLint rules
 - `@types/bun` - Bun type definitions
 - `@types/express` - Express type definitions
 - `@types/compression` - Compression type definitions
 - `@types/cors` - CORS type definitions
 - `@types/morgan` - Morgan type definitions
-- `@types/winston` - Winston type definitions
 
 ## Getting Started
 
@@ -112,7 +110,8 @@ docker compose down
 ├── src/
 │   ├── app.ts                     # Express app configuration and middleware setup
 │   ├── config/
-│   │   ├── env.ts                 # Environment variables
+│   │   └── env.ts                 # Environment variables
+│   ├── lib/
 │   │   └── logger.ts              # Winston logger configuration
 │   ├── middleware/
 │   │   ├── requestId.ts            # Request ID tracking middleware
@@ -131,15 +130,12 @@ docker compose down
 │   │       ├── services.ts         # Business logic
 │   │       └── routes.ts          # Express router configuration
 │   ├── tests/                     # Test files
-│   │   ├── setup.test.ts          # Test setup (data reset)
 │   │   └── modules/
 │   │       └── example.test.ts
 │   ├── constants/                 # App constants
 │   │   └── index.ts              # HTTP status codes and constants
-│   ├── utils/                     # Utility functions
-│   │   └── response.ts            # HTTP response helpers
-│   └── scripts/                  # Utility scripts
-│       └── index.ts              # Placeholder for utility scripts
+│   └── utils/                     # Utility functions
+│       └── response.ts            # HTTP response helpers
 ```
 
 ## Module Pattern
@@ -205,34 +201,31 @@ interface Example extends ExampleInput {
 
 ## Testing
 
-Tests use standard `describe`/`it` syntax that works with most testing frameworks.
+Tests use Bun's built-in test runner with `describe`/`it` syntax.
 
-**Choose your testing framework:**
-
-- **Bun Test** (built-in): `bun test` - no installation needed
-- **Jest**: `npm install jest @types/jest ts-jest`
-- **Mocha + Chai**: `npm install mocha chai @types/mocha @types/chai`
-- **AVA**: `npm install ava @types/ava`
-- **Tap**: `npm install tap @types/tap`
+```bash
+bun test
+```
 
 **Example test structure:**
 ```typescript
 // src/tests/modules/example.test.ts
+import { resetExamples } from '@/modules/example/services';
+
 describe('Example Services', () => {
   beforeEach(() => {
-    // Reset data before each test
     resetExamples();
   });
 
   it('should return empty array initially', async () => {
-    const { getAllExamples } = await import('../../modules/example/services');
+    const { getAllExamples } = await import('@/modules/example/services');
     const examples = getAllExamples();
     expect(examples).toEqual([]);
   });
 });
 ```
 
-The tests included in this template test the service layer directly. For HTTP endpoint testing, consider adding a framework-specific HTTP testing library like Supertest (for Jest) or the built-in `fetch` (for Bun Test).
+The tests included in this template test the service layer directly. For HTTP endpoint testing, consider using Bun's built-in `fetch`.
 
 ## Request Tracking
 
@@ -267,7 +260,7 @@ The template provides standardized response helpers in `src/utils/response.ts` f
 ### Usage in Controllers
 
 ```typescript
-import { sendSuccess, sendCreated, sendError } from '../../utils/response';
+import { sendSuccess, sendCreated, sendError } from '@/utils/response';
 
 // Success response
 export const getAllExamplesController = (req, res) => {
@@ -532,10 +525,9 @@ The Docker setup includes:
 
 Set `NODE_ENV=production` to:
 
-- Enable all security middleware
 - Log to files instead of console
 - Hide stack traces from error responses
-- Enable compression and rate limiting
+- Enable compression and HTTP request logging
 
 ## License
 

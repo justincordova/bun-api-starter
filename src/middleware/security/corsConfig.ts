@@ -1,5 +1,5 @@
 import cors from "cors";
-import { ALLOWED_ORIGINS, NODE_ENV } from "../../config/env";
+import { ALLOWED_ORIGINS, NODE_ENV } from "@/config/env";
 
 // CORS middleware configuration
 const corsConfig = cors({

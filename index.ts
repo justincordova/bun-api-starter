@@ -1,8 +1,8 @@
-import app from "./src/app";
-import { PORT } from "./src/config/env";
+import app from "@/app";
+import { PORT } from "@/config/env";
 import { Server as HTTPServer } from "http";
 import { createServer } from "http";
-import logger, { logError, logStartup, logShutdown } from "./src/lib/logger";
+import logger, { logError, logStartup, logShutdown } from "@/lib/logger";
 
 // Ensure PORT is a number
 const port = Number(PORT);

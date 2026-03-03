@@ -6,8 +6,8 @@ import {
   updateExample,
   deleteExample,
 } from './services';
-import { sendSuccess, sendCreated, sendError } from '../../utils/response';
-import { HTTP_STATUS } from '../../constants';
+import { sendSuccess, sendCreated, sendError } from '@/utils/response';
+import { HTTP_STATUS } from '@/constants';
 
 export const getAllExamplesController = (
   _req: Request,
