@@ -438,17 +438,37 @@ Choose based on your infrastructure and performance needs.
 
 ### Adding Validation
 
-This template is validation-agnostic. Choose your approach:
+> **Important:** The example module skips validation for simplicity, but you should add a runtime validation library before building real endpoints. TypeScript types only exist at compile time — they don't protect you from malformed request bodies at runtime.
 
-- **TypeScript interfaces**: Basic compile-time type safety (current approach)
-- **Zod**: Runtime validation, first-class TypeScript support
-- **class-validator**: Decorator-based validation
-- **Joi**: Schema validation, popular in Node.js
-- **Yup**: Simple, lightweight validation
-- **io-ts**: Runtime type checking
-- **Custom middleware**: Implement validation in routes or middleware
+**Recommended:** [Zod](https://zod.dev) — runtime validation with first-class TypeScript support. Define a schema once and get both the type and the validator:
 
-Each has trade-offs in performance, bundle size, and developer experience.
+```typescript
+import { z } from 'zod';
+
+const CreateUserSchema = z.object({
+  name: z.string().min(1),
+  email: z.string().email(),
+  age: z.number().int().positive().optional(),
+});
+
+type CreateUserInput = z.infer<typeof CreateUserSchema>;
+```
+
+Validate in your controller before passing data to services:
+
+```typescript
+const parsed = CreateUserSchema.safeParse(req.body);
+if (!parsed.success) {
+  return sendError(res, HTTP_STATUS.BAD_REQUEST, 'Validation Error', parsed.error.message);
+}
+const user = createUser(parsed.data);
+```
+
+**Other options:**
+- **Joi** - Schema validation, popular in Node.js
+- **Yup** - Simple, lightweight validation
+- **class-validator** - Decorator-based validation
+- **io-ts** - Runtime type checking
 
 ### Adding API Documentation
 
