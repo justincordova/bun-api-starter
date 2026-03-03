@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "bun --watch index.ts",
     "build": "tsc",
-    "start": "bun dist/index.js",
+    "start": "bun index.ts",
     "test": "bun test",
     "lint": "eslint ."
   },

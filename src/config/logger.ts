@@ -72,30 +72,28 @@ const createProductionLogger = () => {
     }),
   ];
 
-  if (process.env.NODE_ENV === "production") {
-    transports.push(
-      new winston.transports.File({
-        filename: path.join(logsDir, "error.log"),
-        level: "error",
-        format: fileFormat,
-        maxsize: 5242880,
-        maxFiles: 10,
-      }),
-      new winston.transports.File({
-        filename: path.join(logsDir, "combined.log"),
-        format: fileFormat,
-        maxsize: 5242880,
-        maxFiles: 10,
-      }),
-      new winston.transports.File({
-        filename: path.join(logsDir, "http.log"),
-        level: "http",
-        format: fileFormat,
-        maxsize: 5242880,
-        maxFiles: 5,
-      }),
-    );
-  }
+  transports.push(
+    new winston.transports.File({
+      filename: path.join(logsDir, "error.log"),
+      level: "error",
+      format: fileFormat,
+      maxsize: 5242880,
+      maxFiles: 10,
+    }),
+    new winston.transports.File({
+      filename: path.join(logsDir, "combined.log"),
+      format: fileFormat,
+      maxsize: 5242880,
+      maxFiles: 10,
+    }),
+    new winston.transports.File({
+      filename: path.join(logsDir, "http.log"),
+      level: "http",
+      format: fileFormat,
+      maxsize: 5242880,
+      maxFiles: 5,
+    }),
+  );
 
   return winston.createLogger({
     level: process.env.LOG_LEVEL || "info",
@@ -108,24 +106,18 @@ const createProductionLogger = () => {
       }),
     ),
     transports,
-    exceptionHandlers:
-      process.env.NODE_ENV === "production"
-        ? [
-            new winston.transports.File({
-              filename: path.join(logsDir, "exceptions.log"),
-              format: fileFormat,
-            }),
-          ]
-        : [],
-    rejectionHandlers:
-      process.env.NODE_ENV === "production"
-        ? [
-            new winston.transports.File({
-              filename: path.join(logsDir, "rejections.log"),
-              format: fileFormat,
-            }),
-          ]
-        : [],
+    exceptionHandlers: [
+      new winston.transports.File({
+        filename: path.join(logsDir, "exceptions.log"),
+        format: fileFormat,
+      }),
+    ],
+    rejectionHandlers: [
+      new winston.transports.File({
+        filename: path.join(logsDir, "rejections.log"),
+        format: fileFormat,
+      }),
+    ],
   });
 };
 
@@ -168,15 +160,6 @@ export const logError = (
 ) => {
   const errorObj = error instanceof Error ? error : new Error(String(error));
   logger.error(message, { error: errorObj, ...metadata });
-};
-
-export const logRequest = (
-  method: string,
-  url: string,
-  statusCode: number,
-  responseTime: number,
-) => {
-  logger.http(`${method} ${url} ${statusCode} - ${responseTime}ms`);
 };
 
 export const logStartup = (
